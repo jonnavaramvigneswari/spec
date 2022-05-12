@@ -1,7 +1,7 @@
 pipeline {
     agent { label 'mvn-3'}
     triggers {
-        cron(H * * * 1-5)
+        cron('H * * * 1-5')
     }
     stages {
         stage('scm') {
