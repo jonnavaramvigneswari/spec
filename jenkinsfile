@@ -1,0 +1,24 @@
+pipeline {
+    agent { label 'mvn-3'}
+    triggers {
+        cron(H * * * 1-5)
+    }
+    stages {
+        stage('scm') {
+            steps {
+                git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic.git'
+            }
+        }
+        stage('build') {
+            steps{
+                sh 'mvn clean package'
+            }
+        }
+        stage('postbuild') {
+            steps {
+                junit 'target/surefire-reports/*.xml'
+                archive excludes: 'target/*.jar', includes: ''
+            }
+        }
+    }
+}
